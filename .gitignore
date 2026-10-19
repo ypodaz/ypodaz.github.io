@@ -11,3 +11,6 @@ CLAUDE.md
 design-handoff/
 arxiv/
 .DS_Store
+
+# scripts/render-blog.mjs content/blog/-dan yaradır
+src/blog/

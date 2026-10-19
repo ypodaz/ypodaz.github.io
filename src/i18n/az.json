@@ -190,5 +190,39 @@
   "wa_place": {
     "studio": "studiyada",
     "onsite": "öz məkanımda, səyyar studiya"
+  },
+  "blog": {
+    "nav": "Bloq",
+    "home": "Ana səhifə",
+    "crumbs_aria": "Səhifənin yeri",
+    "list_title": "Bloq: podkast, video çəkilişi və şəxsi brend — Y Pod",
+    "list_h1": "Bloq",
+    "list_sub": "Podkast, video çəkilişi, Reels və şəxsi brend haqqında praktik yazılar.",
+    "list_description": "Podkast necə başlamaq, video çəkilişində nələrə diqqət etmək, Reels və şəxsi brend haqqında praktik yazılar. Y Pod komandasından.",
+    "related": "Oxşar yazılar",
+    "all": "Bütün yazılar",
+    "read": "Oxu",
+    "months": [
+      "yanvar",
+      "fevral",
+      "mart",
+      "aprel",
+      "may",
+      "iyun",
+      "iyul",
+      "avqust",
+      "sentyabr",
+      "oktyabr",
+      "noyabr",
+      "dekabr"
+    ],
+    "cats": {
+      "podkast": "Podkast",
+      "video": "Video çəkilişi",
+      "reels": "Reels və sosial şəbəkələr",
+      "sexsi-brend": "Şəxsi brend",
+      "ozun-cek": "Özünüz çəkin",
+      "korporativ": "Korporativ"
+    }
   }
 }

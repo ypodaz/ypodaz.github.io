@@ -2,6 +2,12 @@ import { defineConfig } from 'vite';
 import { resolve, relative } from 'node:path';
 import { renderPages } from './scripts/render-pages.mjs';
 import { sitemapXml, robotsTxt } from './scripts/seo-files.mjs';
+import { renderBlog } from './scripts/render-blog.mjs';
+
+// Bloq: yalnız tarixi gəlmiş yazılar (Bakı vaxtı). BLOG_DRAFTS=1 → hamısı (lokal baxış üçün).
+const SITE_URL = (process.env.SITE_URL || '').replace(/\/$/, '');
+const BLOG_OPTS = { siteUrl: SITE_URL, drafts: process.env.BLOG_DRAFTS === '1' };
+const blog = renderBlog(BLOG_OPTS);
 
 // Template və tərcümələr dəyişəndə 3 dil səhifəsini yenidən yaradır
 function i18nPages() {
@@ -9,11 +15,11 @@ function i18nPages() {
     name: 'ypod-i18n-pages',
     config() { renderPages(); },
     configureServer(server) {
-      const watched = [resolve('src/template.html'), resolve('src/i18n')];
+      const watched = [resolve('src/template.html'), resolve('src/i18n'), resolve('content/blog')];
       server.watcher.add(watched);
       server.watcher.on('change', file => {
-        if (file.endsWith('template.html') || file.includes('/i18n/')) {
-          try { renderPages(); } catch (e) { console.error(e.message); }
+        if (file.endsWith('template.html') || file.includes('/i18n/') || file.includes('/content/blog/')) {
+          try { renderBlog(BLOG_OPTS); renderPages(); } catch (e) { console.error(e.message); }
           server.ws.send({ type: 'full-reload' });
         }
       });
@@ -34,7 +40,8 @@ function lazyChunks() {
     transformIndexHtml: {
       order: 'post',
       handler(html, { bundle, filename }) {
-        if (!bundle) return html;
+        // Bloq səhifələrində animasiya skripti yoxdur
+        if (!bundle || filename.includes('/blog/')) return html;
         const chunks = Object.values(bundle).filter(c => c.type === 'chunk');
         const seen = new Set();
         const out = [];
@@ -58,13 +65,12 @@ function lazyChunks() {
 
 // sitemap.xml + robots.txt: yalnız SITE_URL təyin olunanda (CI). Lokal build-də sitemap yoxdur, robots.txt-də Sitemap sətri yoxdur.
 function seoFiles() {
-  const siteUrl = (process.env.SITE_URL || '').replace(/\/$/, '');
   return {
     name: 'ypod-seo-files',
     apply: 'build',
     generateBundle() {
-      this.emitFile({ type: 'asset', fileName: 'robots.txt', source: robotsTxt(siteUrl) });
-      if (siteUrl) this.emitFile({ type: 'asset', fileName: 'sitemap.xml', source: sitemapXml(siteUrl) });
+      this.emitFile({ type: 'asset', fileName: 'robots.txt', source: robotsTxt(SITE_URL) });
+      if (SITE_URL) this.emitFile({ type: 'asset', fileName: 'sitemap.xml', source: sitemapXml(SITE_URL, blog.urls) });
     },
   };
 }
@@ -84,6 +90,7 @@ export default defineConfig({
         az: resolve('src/index.html'),
         en: resolve('src/en/index.html'),
         ru: resolve('src/ru/index.html'),
+        ...Object.fromEntries(blog.pages.map(p => [p.name, p.file])),
       },
     },
   },

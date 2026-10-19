@@ -4,6 +4,9 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  # Hər gün 03:00 UTC (Bakı 07:00): tarixi gələn bloq yazıları açılır (scripts/render-blog.mjs)
+  schedule:
+    - cron: '0 3 * * *'
 
 permissions:
   contents: read

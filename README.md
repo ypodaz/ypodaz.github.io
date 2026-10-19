@@ -40,6 +40,15 @@ Qiymət dəyişəndə üç yer yenilənir: `src/js/pricing.js`, testdəki gözl�
 - JSON-LD (`LocalBusiness`: iş saatları, areaServed, qiymətlər) `scripts/render-pages.mjs` → `buildJsonLd`-dədir. Qiymətlər `pricing.js`-dən, adlar i18n-dən gəlir. Google Business linki `config.js` → `mapsUrl`-a yazılanda `hasMap` və `sameAs` özü əlavə olunur.
 - `public/llms.txt` əl ilə yazılır (qiymət yoxdur, saytın qiymət bölməsinə istinad edir).
 
+## Bloq
+
+- Yazılar `content/blog/az/<slug>.md`-dədir (frontmatter: `slug`, `title`, `seo_title` ≤ 60, `description` 110–160, `keyword`, `category`, `date`). RU tərcümələri `content/blog/ru/`-a eyni slug ilə qoyulanda `/ru/blog/` və hreflang cütləri özü yaranır (`ru.json`-a `blog` bölməsi də lazımdır).
+- `scripts/render-blog.mjs` Markdown-u `src/blog/` (gitignore) səhifələrinə çevirir: siyahı, yazı, BlogPosting + BreadcrumbList JSON-LD, oxşar yazılar, sonda WhatsApp çağırışı. Səhifələr yüngüldür: 3D və animasiya skripti yoxdur (`styles/main.css` + `styles/blog.css`).
+- **Yayım cədvəli:** `date` bu gündən (Bakı vaxtı) sonradırsa, yazı build-ə, sitemap-a və linklərə düşmür (açılmamış yazıya link adi mətnə çevrilir). GitHub Actions hər gün 07:00 (Bakı) build edir (`deploy.yml` → `schedule`), yazılar öz günü özü açılır. Diqqət: GitHub 60 gün push olmayan açıq repoda planlı işləri dayandırır, ona görə ən azı 2 ayda bir push lazımdır (və ya Actions-da əl ilə "Run workflow").
+- Hamısını lokal görmək: `BLOG_DRAFTS=1 npm run dev` → http://localhost:5181/blog/
+- Əsas səhifənin footer-ində kiçik "Bloq" linki var (yalnız açılmış yazı olan dildə).
+- `npm test` yazıların formatını, daxili linkləri, AZN rəqəmlərinin `pricing.js` ilə uyğunluğunu və cədvəlin 2 ayı keçmədiyini yoxlayır.
+
 ## 3D hero necə işləyir
 
 - İlk ekranda statik mikrofon şəkli (`src/assets/mic-hero.webp`) görünür. Bu şəkil 3D-nin ilk kadrından çəkilib, ona görə 3D gələndə keçid görünmür. Three.js və GSAP ilk toxunuş və ya scroll-da işə düşür. Fayllarını isə səhifə yüklənib sakitləşəndə əvvəlcədən endirir (`modulepreload`, işə salmır): siyahını build `<meta name="ypod-lazy">`-ə yazır (`vite.config.js` → `lazyChunks`), `main.js` → `preloadLazy` oxuyur. 3D faylı yalnız 3D-li cihazda, `saveData`-da heç nə endirilmir.

@@ -485,6 +485,9 @@ a.kv-v:hover { color: var(--c-fuchsia-500); }
 .foot-in { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; }
 .logo-foot { min-height: 0; font-size: 18px; }
 .foot-copy { font-size: 14px; }
+/* Bloq linki qəsdən sönük və kiçikdir (sahibkarın qərarı, 2026-10-19) */
+.foot-blog { margin-left: 10px; color: var(--c-text-3); font-size: 13px; }
+.foot-blog:hover { color: var(--c-fuchsia-500); }
 @media (max-width: 767px) { .foot-in { flex-direction: column; align-items: flex-start; } }
 @media (min-width: 1024px) { .foot { padding: 36px 0; } }
 

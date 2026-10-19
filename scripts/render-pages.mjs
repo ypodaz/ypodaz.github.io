@@ -5,6 +5,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { CONFIG } from '../src/js/config.js';
 import { studioPrice, reelsPrice, EDIT } from '../src/js/pricing.js';
+import { hasPublishedBlog } from './render-blog.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = resolve(ROOT, 'src');
@@ -99,6 +100,8 @@ export function renderPages() {
       ALTERNATES: alternates,
       SOCIAL: social,
       LD_JSON: ldJson,
+      // Footer-də kiçik "Bloq" linki: yalnız bu dildə açılmış yazı varsa (scripts/render-blog.mjs)
+      BLOG_LINK: hasPublishedBlog(l.code, { drafts: process.env.BLOG_DRAFTS === '1' }) ? ` <a class="foot-blog" href="blog/">${t.blog.nav}</a>` : '',
       RUNTIME_JSON: JSON.stringify(runtime).replace(/</g, '\\u003c'),
       AZ_CURRENT: l.code === 'az' ? 'aria-current="true"' : '',
       EN_CURRENT: l.code === 'en' ? 'aria-current="true"' : '',
