@@ -6,7 +6,7 @@ export const CONFIG = {
   // Studiyanın yeri. Ünvan mətni i18n-dədir (contact.address).
   coords: { lat: 40.411221, lng: 49.857947 },
   // Google Business profili yaradılanda onun linkini bura yaz
-  mapsUrl: null,
+  mapsUrl: 'https://maps.google.com/?cid=14237545640321518694',
   wazeUrl: 'https://waze.com/ul/htp5mys9kw',
 
   instagram: {
