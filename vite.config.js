@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import { resolve, relative } from 'node:path';
 import { renderPages } from './scripts/render-pages.mjs';
+import { sitemapXml, robotsTxt } from './scripts/seo-files.mjs';
 
 // Template və tərcümələr dəyişəndə 3 dil səhifəsini yenidən yaradır
 function i18nPages() {
@@ -55,12 +56,25 @@ function lazyChunks() {
   };
 }
 
+// sitemap.xml + robots.txt: yalnız SITE_URL təyin olunanda (CI). Lokal build-də sitemap yoxdur, robots.txt-də Sitemap sətri yoxdur.
+function seoFiles() {
+  const siteUrl = (process.env.SITE_URL || '').replace(/\/$/, '');
+  return {
+    name: 'ypod-seo-files',
+    apply: 'build',
+    generateBundle() {
+      this.emitFile({ type: 'asset', fileName: 'robots.txt', source: robotsTxt(siteUrl) });
+      if (siteUrl) this.emitFile({ type: 'asset', fileName: 'sitemap.xml', source: sitemapXml(siteUrl) });
+    },
+  };
+}
+
 export default defineConfig({
   root: 'src',
   publicDir: resolve('public'),
   // Nisbi yollar: sayt həm github.io/<repo>/ altında, həm də öz domenində işləsin
   base: './',
-  plugins: [i18nPages(), lazyChunks()],
+  plugins: [i18nPages(), lazyChunks(), seoFiles()],
   build: {
     outDir: resolve('dist'),
     emptyOutDir: true,

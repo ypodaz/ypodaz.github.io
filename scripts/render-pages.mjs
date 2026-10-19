@@ -3,6 +3,8 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { CONFIG } from '../src/js/config.js';
+import { studioPrice, reelsPrice, EDIT } from '../src/js/pricing.js';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = resolve(ROOT, 'src');
@@ -18,6 +20,41 @@ export const LANGS = [
 ];
 
 // JS-in işləmə vaxtında lazım olan açarlar (WhatsApp mətnləri, kamera adları)
+// Struktur məlumatı (JSON-LD). Qiymətlər pricing.js-dən gəlir, saytdakı rəqəmlərlə ayrılmasın.
+// Offer adları mövcud i18n mətnlərindən qurulur, yeni mətn yoxdur.
+function buildJsonLd(t, { pageUrl, ogImage }) {
+  const offer = (name, price) => ({ '@type': 'Offer', priceCurrency: 'AZN', price: String(price), itemOffered: { '@type': 'Service', name } });
+  const cams = [0, 1, 2];
+  const offers = [
+    ...cams.map(c => offer(`${t.prices.studio_title} · ${t.cams['c' + c]}`, studioPrice(c))),
+    offer(t.prices.edit_title, EDIT),
+    offer(t.prices.reels_title, reelsPrice('studio')),
+    ...cams.map(c => offer(`${t.prices.onsite_title} · ${t.cams['c' + c]}`, studioPrice(c, 'onsite'))),
+    offer(`${t.prices.reels_title} · ${t.prices.onsite_title}`, reelsPrice('onsite')),
+  ];
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    name: 'Y Pod',
+    ...(pageUrl && { url: pageUrl, image: ogImage }),
+    description: t.meta.description,
+    telephone: '+994555303532',
+    openingHoursSpecification: {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+      opens: '08:00',
+      closes: '22:00',
+    },
+    address: { '@type': 'PostalAddress', streetAddress: 'Zaur Nudirəliyev küçəsi, 34A', addressLocality: 'Bakı', addressCountry: 'AZ' },
+    geo: { '@type': 'GeoCoordinates', latitude: CONFIG.coords.lat, longitude: CONFIG.coords.lng },
+    areaServed: { '@type': 'City', name: 'Bakı' },
+    // mapsUrl (Google Business profili) yaradılandan sonra: hasMap və sameAs-a əlavə olunur
+    ...(CONFIG.mapsUrl && { hasMap: CONFIG.mapsUrl }),
+    sameAs: ['https://www.instagram.com/ypod.az/', ...(CONFIG.mapsUrl ? [CONFIG.mapsUrl] : [])],
+    hasOfferCatalog: { '@type': 'OfferCatalog', name: 'Y Pod', itemListElement: offers },
+  };
+}
+
 const RUNTIME_KEYS = ['lang', 'cams', 'wa', 'wa_place', 'ig'];
 
 const get = (obj, path) => path.split('.').reduce((o, k) => (o == null ? undefined : o[k]), obj);
@@ -52,7 +89,7 @@ export function renderPages() {
       ...LANGS.filter(o => o.code !== l.code).map(o => `<meta property="og:locale:alternate" content="${dicts[o.code].locale}">`),
       '<meta name="twitter:card" content="summary_large_image">',
     ].filter(Boolean).join('\n  ');
-    const ldExtra = SITE_URL ? `"url": "${pageUrl}",\n    "image": "${ogImage}",\n    ` : '';
+    const ldJson = JSON.stringify(buildJsonLd(t, { pageUrl, ogImage }), null, 2).replace(/</g, '\\u003c');
 
     const vars = {
       ROOT: l.root,
@@ -61,7 +98,7 @@ export function renderPages() {
       LANG_RU: l.root + 'ru/',
       ALTERNATES: alternates,
       SOCIAL: social,
-      LD_EXTRA: ldExtra,
+      LD_JSON: ldJson,
       RUNTIME_JSON: JSON.stringify(runtime).replace(/</g, '\\u003c'),
       AZ_CURRENT: l.code === 'az' ? 'aria-current="true"' : '',
       EN_CURRENT: l.code === 'en' ? 'aria-current="true"' : '',

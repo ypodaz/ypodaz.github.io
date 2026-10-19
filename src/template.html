@@ -56,24 +56,7 @@
     })();
   </script>
 
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "name": "Y Pod",
-    {{LD_EXTRA}}"description": "{{=meta.description}}",
-    "telephone": "+994555303532",
-    "openingHours": "Mo-Su 08:00-22:00",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "Zaur Nudirəliyev küçəsi, 34A",
-      "addressLocality": "Bakı",
-      "addressCountry": "AZ"
-    },
-    "geo": { "@type": "GeoCoordinates", "latitude": 40.411221, "longitude": 49.857947 },
-    "sameAs": ["https://www.instagram.com/ypod.az/"]
-  }
-  </script>
+  <script type="application/ld+json">{{LD_JSON}}</script>
   <script id="ypod-i18n" type="application/json">{{RUNTIME_JSON}}</script>
 </head>
 <body>
@@ -475,7 +458,43 @@
     </div>
   </section>
 
-  <!-- ============ ƏLAQƏ ============ -->
+  <!-- ============ FAQ ============ -->
+  <section class="sec sec-center faq" id="faq" aria-labelledby="faq-title">
+    <div class="wrap">
+      <header class="sec-head rv">
+        <p class="eb">{{faq.eyebrow}}</p>
+        <h2 class="hd h2 h2-faq" id="faq-title">{{faq.title}}</h2>
+      </header>
+      <div class="faq-grid">
+        <div class="faq-item rv">
+          <h3 class="hd faq-q">{{faq.q1}}</h3>
+          <p class="mut faq-a">{{faq.a1}}</p>
+        </div>
+        <div class="faq-item rv">
+          <h3 class="hd faq-q">{{faq.q2}}</h3>
+          <p class="mut faq-a">{{faq.a2}}</p>
+        </div>
+        <div class="faq-item rv">
+          <h3 class="hd faq-q">{{faq.q3}}</h3>
+          <p class="mut faq-a">{{faq.a3}}</p>
+        </div>
+        <div class="faq-item rv">
+          <h3 class="hd faq-q">{{faq.q4}}</h3>
+          <p class="mut faq-a">{{faq.a4}}</p>
+        </div>
+        <div class="faq-item rv">
+          <h3 class="hd faq-q">{{faq.q5}}</h3>
+          <p class="mut faq-a">{{faq.a5}}</p>
+        </div>
+        <div class="faq-item rv">
+          <h3 class="hd faq-q">{{faq.q6}}</h3>
+          <p class="mut faq-a">{{faq.a6}}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- ============ ƏLAQƏ ============ -->
   <section class="sec contact" id="elaqe">
     <div class="contact-glow" aria-hidden="true"></div>
     <div class="wrap contact-grid">

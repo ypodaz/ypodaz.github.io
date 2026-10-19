@@ -145,6 +145,22 @@
     "post_aria": "Instagram postu",
     "follow": "@ypod.az-ı izləyin"
   },
+  "faq": {
+    "eyebrow": "Suallar",
+    "title": "Bakıda podkast studiyası: tez\u2011tez verilən suallar",
+    "q1": "Bakıda podkast (podcast) çəkilişi neçəyə başa gəlir?",
+    "a1": "Studiyada 1 saatlıq çəkiliş 1 kamera ilə 70 AZN, 2 kamera ilə 120 AZN, 3 kamera ilə 170 AZN-dir. Podkast montajı 100 AZN-dir. Tam xidmət qiyməti = çəkiliş + montaj. Sizin məkanda çəkiliş 140 AZN-dən başlayır.",
+    "q2": "Çəkilişə nə daxildir?",
+    "a2": "Operator, işıq və səs qurulumu. Siz yalnız danışırsınız, çəkiliş, montaj və təhvil Y Pod komandasındadır.",
+    "q3": "Montaj nə vaxt hazır olur?",
+    "a3": "Təhvil vaxtı çəkilişdən əvvəl bilinir və sabitdir: podkast 7 iş günü, Reels çəkilişi isə 3 iş günü ərzində təhvil verilir.",
+    "q4": "Studiyaya gəlmədən çəkiliş olurmu?",
+    "a4": "Bəli, səyyar studiya ilə: komanda avadanlıqla ofisinizə, klinikanıza və ya təyin etdiyiniz məkana gəlir.",
+    "q5": "Y Pod harada yerləşir və nə vaxt açıqdır?",
+    "a5": "Zaur Nudirəliyev küçəsi, 34A, Bakı. Hər gün, 08:00\u2060–\u206022:00.",
+    "q6": "Çəkilişi necə rezerv edim?",
+    "a6": "WhatsApp və ya Instagram-dan yazın, ya da 055 530 35 32 nömrəsinə zəng edin. Uyğun günü birlikdə seçirik."
+  },
   "contact": {
     "eyebrow": "Əlaqə",
     "title": "Çəkilişə yazılın",

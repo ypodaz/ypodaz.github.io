@@ -34,6 +34,12 @@ npm run preview    # dist/-i lokal göstərir
 
 Qiymət dəyişəndə üç yer yenilənir: `src/js/pricing.js`, testdəki gözlənilən rəqəmlər və şablondakı ilkin rəqəmlər (JS işləməyəndə görünənlər).
 
+## SEO faylları
+
+- `sitemap.xml` və `robots.txt` build zamanı yaranır (`vite.config.js` → `seoFiles`, `scripts/seo-files.mjs`). Domen `SITE_URL`-dan gəlir (CI-da `vars.SITE_URL`); lokal build-də sitemap yoxdur. `public/robots.txt` yoxdur, əl ilə yaratma.
+- JSON-LD (`LocalBusiness`: iş saatları, areaServed, qiymətlər) `scripts/render-pages.mjs` → `buildJsonLd`-dədir. Qiymətlər `pricing.js`-dən, adlar i18n-dən gəlir. Google Business linki `config.js` → `mapsUrl`-a yazılanda `hasMap` və `sameAs` özü əlavə olunur.
+- `public/llms.txt` əl ilə yazılır (qiymət yoxdur, saytın qiymət bölməsinə istinad edir).
+
 ## 3D hero necə işləyir
 
 - İlk ekranda statik mikrofon şəkli (`src/assets/mic-hero.webp`) görünür. Bu şəkil 3D-nin ilk kadrından çəkilib, ona görə 3D gələndə keçid görünmür. Three.js və GSAP ilk toxunuş və ya scroll-da işə düşür. Fayllarını isə səhifə yüklənib sakitləşəndə əvvəlcədən endirir (`modulepreload`, işə salmır): siyahını build `<meta name="ypod-lazy">`-ə yazır (`vite.config.js` → `lazyChunks`), `main.js` → `preloadLazy` oxuyur. 3D faylı yalnız 3D-li cihazda, `saveData`-da heç nə endirilmir.

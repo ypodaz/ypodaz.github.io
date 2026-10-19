@@ -1,0 +1,26 @@
+# Y Pod
+
+> Y Pod is a full-service podcast and video studio in Baku, Azerbaijan. The client talks; filming (operator, light, sound), editing and final delivery are done by the Y Pod team.
+
+## Pages
+
+- [Azərbaycan (Azerbaijani)](https://ypodaz.github.io/): services, pricing, contact
+- [English](https://ypodaz.github.io/en/): services, pricing, contact
+- [Русский (Russian)](https://ypodaz.github.io/ru/): services, pricing, contact
+
+## Services
+
+- Podcast filming in the studio with 1, 2 or 3 cameras (operator, light and sound included)
+- Podcast editing: cutting, audio cleanup, final export
+- Reels package: 1 hour of filming and 5 ready Reels, editing included
+- Mobile studio: the team comes with equipment to the client's office, clinic or chosen location
+- Corporate hour packages for regular shoots
+
+Current prices are listed on each page in the pricing section (currency: AZN).
+
+## Contact
+
+- Address: Zaur Nudirəliyev küçəsi, 34A, Baku, Azerbaijan
+- Opening hours: every day, 08:00–22:00
+- Phone and WhatsApp: +994 55 530 35 32
+- Instagram: https://www.instagram.com/ypod.az/
