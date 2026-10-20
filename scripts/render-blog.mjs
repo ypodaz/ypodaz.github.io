@@ -49,10 +49,12 @@ export function loadPosts(lang) {
 
 export const isPublished = (post, today, drafts = false) => drafts || post.date <= today;
 
-// Hələ açılmamış yazıya link mətnə çevrilir (404 olmasın). Cədvəllər mobil üçün sürüşən qutuya salınır.
-export function renderBody(md, publishedSlugs) {
+// Hələ açılmamış yazıya link mətnə çevrilir (404 olmasın). Markdown-da linklər dilsiz yazılır (/blog/…, /#…),
+// dil prefiksi (ru/) burada əlavə olunur. Cədvəllər mobil üçün sürüşən qutuya salınır.
+export function renderBody(md, publishedSlugs, dir = '') {
   return marked.parse(md)
     .replace(/<a href="\/blog\/([a-z0-9-]+)\/">([\s\S]*?)<\/a>/g, (all, slug, text) => (publishedSlugs.has(slug) ? all : text))
+    .replace(/href="\/(blog\/|#)/g, `href="/${dir}$1`)
     .replace(/<table>/g, '<div class="post-table"><table>')
     .replace(/<\/table>/g, '</table></div>');
 }
@@ -198,7 +200,7 @@ export function renderBlog({ siteUrl = '', today = bakuToday(), drafts = false }
     <h1 class="hd post-h1">${esc(p.title)}</h1>
     <p class="mut post-meta"><time datetime="${p.date}">${fmtDate(p.date, t.blog.months)}</time></p>
     <div class="post-body">
-${renderBody(p.body, published)}
+${renderBody(p.body, published, lang.dir)}
     </div>
     <aside class="card post-cta">
       <h2 class="hd post-cta-h">${t.contact.title}</h2>

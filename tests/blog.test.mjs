@@ -75,3 +75,26 @@ test('sitemap bloq URL-lərini lastmod ilə əlavə edir', () => {
   assert.ok(xml.includes('hreflang="ru" href="https://example.com/ru/blog/b/"'));
   assert.equal(xml.split('<url>').length - 1, 5);
 });
+
+test('RU tərcümələri: AZ ilə eyni slug, tarix və kateqoriya; AZ hərfi və qadağan ifadə yoxdur', () => {
+  const az = new Map(loadPosts('az').map(p => [p.slug, p]));
+  for (const p of loadPosts('ru')) {
+    const a = az.get(p.slug);
+    assert.ok(a, `ru/${p.slug}: AZ versiyası yoxdur`);
+    assert.equal(p.date, a.date, `ru/${p.slug}: tarix AZ ilə eyni olmalıdır`);
+    assert.equal(p.category, a.category, `ru/${p.slug}: kateqoriya AZ ilə eyni olmalıdır`);
+    const text = `${p.title} ${p.seo_title} ${p.description} ${p.body}`;
+    assert.ok(!/[əğı]/i.test(text), `ru/${p.slug}: tərcümə olunmamış Azərbaycan mətni`);
+    for (const bad of [/аренд/i, /под ключ/i, /(^|[^А-Яа-яЁё])ИИ([^А-Яа-яЁё]|$)/, /искусственн\S* интеллект/i, /нейросет/i, /\bAI\b/]) {
+      assert.ok(!bad.test(text), `ru/${p.slug}: qadağan ifadə ${bad}`);
+    }
+  }
+});
+
+test('RU yazılarında linklər /ru/ prefiksi alır', () => {
+  const html = renderBody('[a](/blog/a/) [b](/blog/b/) [c](/#qiymetler)', new Set(['a']), 'ru/');
+  assert.ok(html.includes('href="/ru/blog/a/"'));
+  assert.ok(html.includes('href="/ru/#qiymetler"'));
+  assert.ok(!html.includes('/blog/b/'));
+  assert.ok(renderBody('[a](/blog/a/)', new Set(['a'])).includes('href="/blog/a/"'));
+});
